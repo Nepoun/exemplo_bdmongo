@@ -67,7 +67,7 @@ while (n != "parar"):
         escolha = n
 
     print(
-        "O que deseja fazer? \n 1- Inserir algo novo \n 2- Verificar algum campo \n 3- Verificar todos os documentos \n 4- Apagar documento \n 5- Atualizar documento \n 'voltar' para retornar ao menu principal"
+        "O que deseja fazer? \n 1- Inserir documento novo \n 2- Verificar documento por coluna \n 3- Verificar todos os documentos \n 4- Apagar documento \n 5- Atualizar documento \n 'voltar' para retornar ao menu principal"
     )
     n = input()
     if n == "voltar":
@@ -82,6 +82,10 @@ while (n != "parar"):
         db.findQuery(escolha, coluna, procura)
     elif n == "3":
         db.findSort(escolha)
+    elif n == "4":
+        coluna = input("Qual coluna você quer buscar para apagar? \n")
+        procura = input("O que você busca apagar? \n")    
+        db.deleteQuery(coluna, procura, escolha)
     elif n == "5":
         id = input("Qual o id? \n")
         dict = insert_input(escolha)

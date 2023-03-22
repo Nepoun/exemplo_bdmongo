@@ -2,7 +2,7 @@ import pymongo
 from pymongo.server_api import ServerApi
 
 user = "antonho"
-password = "mZWF2JwetHeuSwED"
+password = "12345"
 
 client = pymongo.MongoClient(f"mongodb+srv://{user}:{password}@cluster0.9c8yf38.mongodb.net/?retryWrites=true&w=majority")
 db = client.test
@@ -12,13 +12,13 @@ mydb = client.MercadoLivre
 
 def getCol(db, escolha):
     if(escolha == "1"):
-        mycol = mydb.compras
+        mycol = db.compras
     elif(escolha == "2"):
-        mycol = mydb.produtos
+        mycol = db.produtos
     elif(escolha == "3"):
-        mycol = mydb.usuarios
+        mycol = db.usuarios
     elif(escolha == "4"):
-        mycol = mydb.vendedor
+        mycol = db.vendedor
     return mycol
 
 def insert(escolha, dict):
@@ -43,7 +43,7 @@ def findQuery(escolha, coluna, procura):
     #Query
     global mydb
     mycol = getCol(mydb, escolha)
-    print("\n####QUERY####")
+    print("\nPROCURANDO...")
     myquery = { coluna: procura }
     mydoc = mycol.find(myquery)
     for x in mydoc:
@@ -55,7 +55,15 @@ def updateQuery(id, values, escolha):
     print("\nATUALIZANDO...") 
     newvalues = { "$set" : values }
     
-    mydoc = mycol.update_one({"_id": id }, newvalues)
+    mycol.find_one_and_update({"_id": id }, newvalues)
+
+def deleteQuery(coluna, procura, escolha):
+    #Query
+    global mydb
+    mycol = getCol(mydb, escolha)
+    print("\nDELETANDO...")
+    myquery = { coluna: procura }
+    mycol.delete_one(myquery)
 
 
 
