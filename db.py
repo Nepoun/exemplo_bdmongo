@@ -10,11 +10,7 @@ db = client.test
 global mydb
 mydb = client.MercadoLivre
 
-def insert(escolha, dict):
-    #Insert
-    global mydb
-    mycol = mydb.usuarios
-
+def getCol(db, escolha):
     if(escolha == "1"):
         mycol = mydb.compras
     elif(escolha == "2"):
@@ -23,40 +19,43 @@ def insert(escolha, dict):
         mycol = mydb.usuarios
     elif(escolha == "4"):
         mycol = mydb.vendedor
+    return mycol
+
+def insert(escolha, dict):
+    #Insert
+    global mydb
+    mycol = getCol(mydb, escolha)
 
     print("INSERÇÃO...")
     x = mycol.insert_one(dict)
     print(x.inserted_id)
 
-def findSort():
+def findSort(escolha):
     #Sort
     global mydb
-    mycol = mydb.usuarios
+    mycol = getCol(mydb, escolha)
     print("\nBUSCANDO...") 
     mydoc = mycol.find().sort("nome")
     for x in mydoc:
         print(x)
 
-def findQuery(coluna, procura):
+def findQuery(escolha, coluna, procura):
     #Query
     global mydb
-    mycol = mydb.usuarios
+    mycol = getCol(mydb, escolha)
     print("\n####QUERY####")
     myquery = { coluna: procura }
     mydoc = mycol.find(myquery)
     for x in mydoc:
         print(x)
 
-def updateQuery(id, values):
+def updateQuery(id, values, escolha):
     global mydb
-    mycol = mydb.usuarios
+    mycol = getCol(mydb, escolha)
     print("\nATUALIZANDO...") 
     newvalues = { "$set" : values }
     
     mydoc = mycol.update_one({"_id": id }, newvalues)
-
-    for x in mydoc.find():
-        print(x)
 
 
 

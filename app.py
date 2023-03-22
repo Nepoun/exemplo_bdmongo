@@ -51,7 +51,7 @@ def insert_input(escolha):
             "sobrenome": str(input("Sobrenome do vendedor: "))
         }
 
-    db.insert(escolha, mydict)
+    return mydict
     
 
 n = "comece"
@@ -72,5 +72,18 @@ while (n != "parar"):
     n = input()
     if n == "voltar":
         continue
-    elif n== "1":
-        insert_input(escolha)
+    elif n == "1":
+        dict = insert_input(escolha)
+        db.insert(escolha, dict)
+    elif n == "2":
+        coluna = input("Qual coluna você quer? \n")
+        procura = input("O que você busca? \n")
+
+        db.findQuery(escolha, coluna, procura)
+    elif n == "3":
+        db.findSort(escolha)
+    elif n == "5":
+        id = input("Qual o id? \n")
+        dict = insert_input(escolha)
+        db.updateQuery(id, dict, escolha)
+    
