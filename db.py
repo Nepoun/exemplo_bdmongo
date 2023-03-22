@@ -53,9 +53,9 @@ def updateQuery(id, values, escolha):
     global mydb
     mycol = getCol(mydb, escolha)
     print("\nATUALIZANDO...") 
-    newvalues = { "$set" : values }
+    newvalues = { "$set": values }
     
-    mycol.find_one_and_update({"_id": id }, newvalues)
+    mycol.update_one({"_id": id }, newvalues)
 
 def deleteQuery(coluna, procura, escolha):
     #Query
