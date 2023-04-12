@@ -1,4 +1,16 @@
 import db
+import RedisManager
+
+def favorite_loop():
+    n = "a"
+    allFavorites = []
+    print("ESCOLHA DE FAVORITOS. Coloque 0 para terminar de escolher \n")
+    while n != "0":
+        n = str(input("Escolha mais um favorito: "))
+        if n != "0":
+            allFavorites.append(n)
+    
+    return allFavorites
 
 def insert_input(escolha):
     mydict = {}
@@ -11,7 +23,8 @@ def insert_input(escolha):
                 "cpf": str(input("CPF do usuario:\n")),
                 "endereco": {
                     "cep": str(input("CEP do usuario\n"))
-                }
+                },
+                "favoritos": favorite_loop()
             },
             "produtos": {
                 "nome": str(input("Nome do produto: \n")),
@@ -20,7 +33,8 @@ def insert_input(escolha):
                 "vendedor": {
                     "nome": str(input("Nome do vendedor: ")),
                     "sobrenome": str(input("Sobrenome do vendedor: "))
-                }
+                },
+                "favoritos": favorite_loop()
             }
         }
     elif escolha == "2":
@@ -32,7 +46,8 @@ def insert_input(escolha):
             "vendedor": {
                 "nome": str(input("Nome do vendedor: ")),
                 "sobrenome": str(input("Sobrenome do vendedor: "))
-            }
+            },
+            "favoritos": favorite_loop()
         }
     elif escolha == "3":
         #Usuarios
@@ -42,7 +57,9 @@ def insert_input(escolha):
             "cpf": str(input("CPF do usuario: \n")),
             "endereco": {
                 "cep": str(input("CEP do usuario:  \n"))
-            }
+            },
+            "favoritos": favorite_loop()
+            
         }
     elif escolha == "4":
         #Vendedor
@@ -67,7 +84,7 @@ while (n != "parar"):
         escolha = n
 
     print(
-        "O que deseja fazer? \n 1- Inserir documento novo \n 2- Verificar documento por coluna \n 3- Verificar todos os documentos \n 4- Apagar documento \n 5- Atualizar documento \n 'voltar' para retornar ao menu principal"
+        "O que deseja fazer? \n 1- Inserir documento novo \n 2- Verificar documento por coluna \n 3- Verificar todos os documentos \n 4- Apagar documento \n 5- Atualizar documento \n 'voltar' para retornar ao menu principal \n Se deseja mandar algo para o REDIS, vá na opção 2"
     )
     n = input()
     if n == "voltar":
@@ -79,7 +96,14 @@ while (n != "parar"):
         coluna = input("Qual coluna você quer? \n")
         procura = input("O que você busca? \n")
 
-        db.findQuery(escolha, coluna, procura)
+        selected = db.findQuery(escolha, coluna, procura)
+
+        opcao = int(input("\n Deseja mandar para o REDIS? \n 0 - Não \n 1 - Sim"))
+
+        if(opcao == 1):
+            RedisManager.setDb(escolha, selected)
+
+
     elif n == "3":
         db.findSort(escolha)
     elif n == "4":
@@ -90,4 +114,3 @@ while (n != "parar"):
         id = input("Qual o id? \n")
         dict = insert_input(escolha)
         db.updateQuery(id, dict, escolha)
-    

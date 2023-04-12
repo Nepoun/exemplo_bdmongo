@@ -1,5 +1,6 @@
 import pymongo
 from pymongo.server_api import ServerApi
+from bson.objectid import ObjectId
 
 user = "antonho"
 password = "12345"
@@ -48,6 +49,9 @@ def findQuery(escolha, coluna, procura):
     mydoc = mycol.find(myquery)
     for x in mydoc:
         print(x)
+        return x
+
+    
 
 def updateQuery(id, values, escolha):
     global mydb
@@ -55,7 +59,7 @@ def updateQuery(id, values, escolha):
     print("\nATUALIZANDO...") 
     newvalues = { "$set": values }
     
-    mycol.update_one({"_id": id }, newvalues)
+    mycol.update_one({"_id": ObjectId(id) }, newvalues)
 
 def deleteQuery(coluna, procura, escolha):
     #Query
