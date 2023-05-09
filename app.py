@@ -75,16 +75,23 @@ n = "comece"
 escolha = "nada"
 while (n != "parar"):
     print(
-        "Selecione uma coleção \n 1- Compras \n 2- Produtos \n 3- Usuarios \n 4- Vendedor \n\n Escreva 'parar' para sair"
+        "Selecione uma coleção \n 1- Compras \n 2- Produtos \n 3- Usuarios \n 4- Vendedor \n 5- REDIS \n\n Escreva 'parar' para sair"
     )
     n = str(input())
     if n == 'parar':
         continue
+    elif n == '5':
+
+        print("### REDIS:")
+
+        RedisManager.iniciarRedis()
+
+        continue;
     else:
         escolha = n
 
     print(
-        "O que deseja fazer? \n 1- Inserir documento novo \n 2- Verificar documento por coluna \n 3- Verificar todos os documentos \n 4- Apagar documento \n 5- Atualizar documento \n 'voltar' para retornar ao menu principal \n Se deseja mandar algo para o REDIS, vá na opção 2"
+        "O que deseja fazer? \n 1- Inserir documento novo \n 2- Verificar documento por coluna \n 3- Verificar todos os documentos \n 4- Apagar documento \n 5- Atualizar documento \n 'voltar' para retornar ao menu principal"
     )
     n = input()
     if n == "voltar":
@@ -98,11 +105,6 @@ while (n != "parar"):
 
         selected = db.findQuery(escolha, coluna, procura)
 
-        opcao = int(input("\n Deseja mandar para o REDIS? \n 0 - Não \n 1 - Sim"))
-
-        if(opcao == 1):
-            RedisManager.setDb(escolha, selected)
-
 
     elif n == "3":
         db.findSort(escolha)
@@ -114,3 +116,4 @@ while (n != "parar"):
         id = input("Qual o id? \n")
         dict = insert_input(escolha)
         db.updateQuery(id, dict, escolha)
+

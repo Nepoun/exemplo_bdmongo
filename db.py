@@ -1,6 +1,8 @@
 import pymongo
 from pymongo.server_api import ServerApi
 from bson.objectid import ObjectId
+import json
+from RedisManager import MongoEncoder
 
 user = "antonho"
 password = "12345"
@@ -11,7 +13,14 @@ db = client.test
 global mydb
 mydb = client.MercadoLivre
 
+def printDict(objectToPrint):
+
+    temp = json.dumps((objectToPrint), cls=MongoEncoder, indent=4)
+
+    print(temp)
+
 def getCol(db, escolha):
+    mycol = db.usuarios
     if(escolha == "1"):
         mycol = db.compras
     elif(escolha == "2"):
@@ -38,7 +47,7 @@ def findSort(escolha):
     print("\nBUSCANDO...") 
     mydoc = mycol.find().sort("nome")
     for x in mydoc:
-        print(x)
+        printDict(x)
 
 def findQuery(escolha, coluna, procura):
     #Query
@@ -48,10 +57,9 @@ def findQuery(escolha, coluna, procura):
     myquery = { coluna: procura }
     mydoc = mycol.find(myquery)
     for x in mydoc:
-        print(x)
+        printDict(x)
         return x
 
-    
 
 def updateQuery(id, values, escolha):
     global mydb
